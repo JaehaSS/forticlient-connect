@@ -1,0 +1,24 @@
+name : "fortclient-vpn"
+description : "Connect to FortiClient VPN"
+autor : "JaehaSS"
+inputs:
+  vpn_ip:
+    description: "VPN IP Address"
+    required: true
+  vpn_port:
+    description: "VPN Port"
+  vpn_username:
+    description: "VPN Username"
+    required: true
+  vpn_password:
+    description: "VPN Password"
+    required: true
+  
+runs:
+  using: "docker"
+  image : "Dockerfile"
+  ENV:
+    VPN_IP: ${{ inputs.vpn_ip }}
+    VPN_PORT: ${{ inputs.vpn_port }}
+    VPN_USERNAME: ${{ inputs.vpn_username }}
+    VPN_PASSWORD: ${{ inputs.vpn_password }}
