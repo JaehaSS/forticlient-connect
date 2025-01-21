@@ -1,16 +1,14 @@
 #!/usr/bin/expect -f 
-echo "Test !! : $vpn_ip"
-echo "Test !! : $VPN_IP"
-echo "TEST!!!! : ${{INPUT_VPN_IP}}
+echo "Test!! $1"
 spawn /opt/forticlient/fortivpn edit vpn
 expect -re "Type"
 send -- "1\r"
 set timeout -1
 expect -re "Remote Gateway:"
-send -- "$vpn_ip \r"
+send -- "$1 \r"
 set timeout -1
 expect -re "Port"
-send -- "$vpn_port \r"
+send -- "$2 \r"
 set timeout -1
 expect -re "Authentication"
 send -- "3\r"

@@ -17,8 +17,8 @@ inputs:
 runs:
   using: "docker"
   image : "Dockerfile"
-  env:
-    vpn_ip: ${{ inputs.vpn_ip }}
-    vpn_port: ${{ inputs.vpn_port }}
-    vpn_username: ${{ inputs.vpn_username }}
-    vpn_password: ${{ inputs.vpn_password }}
+  args:
+    - ${{ inputs.vpn_ip }}
+    - ${{ inputs.vpn_port }}
+    - ${{ inputs.vpn_username }}
+    - ${{ inputs.vpn_password }}
