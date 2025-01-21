@@ -1,7 +1,3 @@
-#!/bin/bash
-
-
-
 #!/usr/bin/expect -f 
 spawn /opt/forticlient/fortivpn edit vpn
 expect -re "Type"
