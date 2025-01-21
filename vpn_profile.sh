@@ -4,10 +4,10 @@ expect -re "Type"
 send -- "1\r"
 set timeout -1
 expect -re "Remote Gateway:"
-send -- "$1 \r"
+send -- "$vpn_ip \r"
 set timeout -1
 expect -re "Port"
-send -- "$2 \r"
+send -- "$vpn_port \r"
 set timeout -1
 expect -re "Authentication"
 send -- "3\r"
