@@ -1,4 +1,7 @@
 #!/usr/bin/expect -f 
+echo "Test !! : $vpn_ip"
+echo "Test !! : $VPN_IP"
+echo "TEST!!!! : ${{INPUT_VPN_IP}}
 spawn /opt/forticlient/fortivpn edit vpn
 expect -re "Type"
 send -- "1\r"
