@@ -4,10 +4,10 @@ expect -re "Type"
 send -- "1\r"
 set timeout -1
 expect -re "Remote Gateway:"
-send -- "$vpn_ip \r"
+send -- "$env(vpn_ip) \r"
 set timeout -1
 expect -re "Port"
-send -- "$vpn_port \r"
+send -- "$env(vpn_port) \r"
 set timeout -1
 expect -re "Authentication"
 send -- "3\r"
