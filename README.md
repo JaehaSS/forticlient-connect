@@ -1,14 +1,22 @@
 # Connecting FortiVpn 
 
 ## Inputs
-
-### vpn_ip
-### vpn_port
-### vpn_username
-### vpn_password
-
+| Name         | Type   | Description |
+|-------------|--------|-------------|
+| VPN_IP      | String | VPN IP      |
+| VPN_PORT    | String | VPN PORT    |
+| VPN_USERNAME | String | VPN USERNAME |
+| VPN_PASS | String | VPN PASSWORD |
 ## Example usage
+```yaml
+- name: fortclient-vpn
+  uses: JaehaSS/forticlient-connect@0.9.0-beta
+  with:
+    VPN_IP: ${{ secrets.VPN_IP }}
+    VPN_PORT: ${{ secrets.VPN_PORT }}
+    VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
+    VPN_PASS: ${{ secrets.VPN_PASS }}
+```
 
-uses: actions/hello-world-docker-action@v2
-with:
-  who-to-greet: 'Mona the Octocat'
+## V2.0 - Dev
+Using Dockerfile
