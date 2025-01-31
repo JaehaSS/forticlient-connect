@@ -9,13 +9,17 @@
 | VPN_PASS | String | VPN PASSWORD |
 ## Example usage
 ```yaml
-- name: fortclient-vpn
-  uses: JaehaSS/forticlient-connect@0.9.0-beta
-  with:
-    VPN_IP: ${{ secrets.VPN_IP }}
-    VPN_PORT: ${{ secrets.VPN_PORT }}
-    VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
-    VPN_PASS: ${{ secrets.VPN_PASS }}
+jobs:
+  foriclient-setup:
+  runs-on: ubuntu-22.04 # Currently 20.04 or 22.04 Supported
+  steps:
+    - name: fortclient-vpn
+      uses: JaehaSS/forticlient-connect@1.0.0
+      with:
+        VPN_IP: ${{ secrets.VPN_IP }}
+        VPN_PORT: ${{ secrets.VPN_PORT }}
+        VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
+        VPN_PASS: ${{ secrets.VPN_PASS }}
 ```
 
 ## V2.0 - Dev
