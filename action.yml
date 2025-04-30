@@ -21,12 +21,12 @@ runs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install -y libnss3-tools ppp libappindicator1 expect ca-certificates
+        sudo apt-get install -y libnss3-tools ppp libappindicator3-1 expect ca-certificates
 
     - name: Download and Install FortiClient VPN
       shell: bash
       run: |
-        wget https://filestore.fortinet.com/forticlient/forticlient_vpn_7.4.0.1636_amd64.deb -O forticlient.deb
+        wget https://links.fortinet.com/forticlient/deb/vpnagent -O forticlient.deb
         sudo dpkg -i forticlient.deb
 
     - name: Create VPN Profile
