@@ -24,3 +24,7 @@ jobs:
 
 ## V2.0 - Dev
 Using Dockerfile
+
+
+
+RUN /bin/sh -c wget https://links.fortinet.com/forticlient/deb/vpnagent -O forticlient.deb &&     dpkg -i forticlient.deb # buildkit
