@@ -66,7 +66,6 @@ runs:
         VPN_USERNAME: ${{ inputs.VPN_USERNAME }}
         VPN_PASS: ${{ inputs.VPN_PASS }}
       run: |
-        set -x
         echo 'spawn /opt/forticlient/fortivpn connect myvpn --user=$env(VPN_USERNAME) --password' >> vpnconnect.exp
         echo 'expect -exact "Password:"' >> vpnconnect.exp
         echo 'send -- "$env(VPN_PASS)\r"' >> vpnconnect.exp 
