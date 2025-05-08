@@ -14,7 +14,6 @@ inputs:
     description: "VPN Password"
     required: true
   
-
 runs:
   using: "composite"
   steps:
@@ -26,66 +25,55 @@ runs:
 
     - name: Download and Install FortiClient VPN
       shell: bash
+
       run: |
         wget https://links.fortinet.com/forticlient/deb/vpnagent -O forticlient.deb
         sudo dpkg -i forticlient.deb
-       
+
     - name: Create VPN Profile
       shell: bash
+      env:
+        VPN_IP: ${{ inputs.VPN_IP }}
+        VPN_PORT: ${{ inputs.VPN_PORT }}
       run: |
-        set -x 
-        cat <<EOF > create_vpn_profile.exp
-        spawn /opt/forticlient/fortivpn edit myvpn
-        expect -re "Remote Gateway:"
-        send -- "\$env(INPUT_VPN_IP)\r"
-        set timeout -1
-        expect -re "Port"
-        send -- "\$env(INPUT_VPN_PORT)\r"
-        set timeout -1
-        expect -re "Authentication"
-        send -- "3\r"
-        set timeout -1
-        expect -re "Certificate"
-        send -- "3\r"
-        set timeout -1
-        expect eof
-        EOF
+        echo '#!/usr/bin/expect -f' > create_vpn_profile.exp
+        echo 'spawn /opt/forticlient/fortivpn edit myvpn' >> create_vpn_profile.exp
+        echo 'expect -re "Remote Gateway:"' >> create_vpn_profile.exp
+        echo 'send -- "$env(VPN_IP)\r"' >> create_vpn_profile.exp
+        echo 'set timeout -1' >> create_vpn_profile.exp
+        echo 'expect -re "Port"' >> create_vpn_profile.exp
+        echo 'send -- "$env(VPN_PORT)\r"' >> create_vpn_profile.exp
+        echo 'set timeout -1' >> create_vpn_profile.exp
+        echo 'expect -re "Authentication"' >> create_vpn_profile.exp
+        echo 'send -- "3\r"' >> create_vpn_profile.exp
+        echo 'set timeout -1' >> create_vpn_profile.exp
+        echo 'expect -re "Certificate"' >> create_vpn_profile.exp
+        echo 'send -- "3\r"' >> create_vpn_profile.exp
+        echo 'set timeout -1' >> create_vpn_profile.exp
+        echo 'expect eof' >> create_vpn_profile.exp
         chmod +x create_vpn_profile.exp
         ./create_vpn_profile.exp
-      env:
-        INPUT_VPN_IP: ${{ inputs.VPN_IP }}
-        INPUT_VPN_PORT: ${{ inputs.VPN_PORT }}
-
-    - name: List VPN Profiles and View Specific Profile
+          
+    - name: List VPN Script
       shell: bash
       run: |
-        # List all configured FortiClient VPN profiles
         /opt/forticlient/fortivpn list
-        # View the details of the 'myvpn' profile to verify creation
         /opt/forticlient/fortivpn view myvpn
 
-    - name: Create VPN Connect Script and Connect
+    - name: Create VPN Connect Script
       shell: bash
-      
+      env:
+        VPN_USERNAME: ${{ inputs.VPN_USERNAME }}
+        VPN_PASS: ${{ inputs.VPN_PASS }}
       run: |
-        set -x # Enable debug output
-        cat <<EOF > vpnconnect.exp
-        #!/usr/bin/expect -f
-        
-        spawn /opt/forticlient/fortivpn connect myvpn --user=\$env(INPUT_VPN_USERNAME) --password
-
-        expect -exact "password:"
-        send -- "\$env(INPUT_VPN_PASS)\r"
-        set timeout -1
-        expect {
-          -re "Confirm " { send -- "y\r"; exp_continue }
-          -re "Connected" { exit 0 } 
-          eof { exit 1 } 
-        }
-        expect eof
-        EOF
+        echo '#!/usr/bin/expect -f' > vpnconnect.exp
+        echo 'spawn /opt/forticlient/fortivpn connect myvpn --user=$env(VPN_USERNAME) --password' >> vpnconnect.exp
+        echo 'expect -exact "password:"' >> vpnconnect.exp
+        echo 'send -- "$env(VPN_PASS)\r"' >> vpnconnect.exp 
+        echo 'set timeout -1' >> vpnconnect.exp
+        echo 'expect -re "Confirm "' >> vpnconnect.exp
+        echo 'send -- "y\r"' >> vpnconnect.exp
+        echo 'set timeout -1' >> vpnconnect.exp
+        echo 'expect eof' >> vpnconnect.exp
         chmod +x vpnconnect.exp
         ./vpnconnect.exp
-      env:
-        INPUT_VPN_USERNAME: ${{ inputs.VPN_USERNAME }}
-        INPUT_VPN_PASS: ${{ inputs.VPN_PASS }} 
