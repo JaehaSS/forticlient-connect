@@ -68,7 +68,7 @@ runs:
       run: |
         echo '#!/usr/bin/expect -f' > vpnconnect.exp
         echo 'spawn /opt/forticlient/fortivpn connect myvpn --user=$env(VPN_USERNAME) --password' >> vpnconnect.exp
-        echo 'expect -exact "password:"' >> vpnconnect.exp
+        echo 'expect -exact "Password:"' >> vpnconnect.exp
         echo 'send -- "$env(VPN_PASS)\r"' >> vpnconnect.exp 
         echo 'set timeout -1' >> vpnconnect.exp
         echo 'expect -re "Confirm "' >> vpnconnect.exp
