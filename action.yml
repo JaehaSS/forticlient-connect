@@ -62,7 +62,7 @@ runs:
 
     - name: Create VPN Connect Script
       shell: bash
-      timeout-minutes : 1
+
       env:
         VPN_USERNAME: ${{ inputs.VPN_USERNAME }}
         VPN_PASS: ${{ inputs.VPN_PASS }}
@@ -77,15 +77,31 @@ runs:
         echo 'send -- "y\r"' >> vpnconnect.exp
         echo 'set timeout 30' >> vpnconnect.exp
         echo 'expect eof' >> vpnconnect.exp
-
         chmod +x vpnconnect.exp
-        ./vpnconnect.exp
 
-    - name : Retry
-      if: failure()
+    - name : Connect to VPN
       shell: bash
-      timeout-minutes : 1
       run: |
-        echo "Retrying VPN connection..."
-        ./vpnconnect.exp
-    
+        MAX_RETRIES=5
+        TIMEOUT_SECONDS=10
+        RETRY_DELAY=5
+        
+        for ((i=1; i<=MAX_RETRIES; i++)); do
+          echo "[$i/$MAX_RETRIES] VPN 연결 시도 중..."
+        
+          timeout $TIMEOUT_SECONDS ./vpnconnect.exp
+          STATUS=$?
+        
+          if [ $STATUS -eq 0 ]; then
+            echo "VPN 연결 성공!"
+            exit 0
+          else
+            echo "VPN 연결 실패 또는 타임아웃 (code: $STATUS)"
+            if [ $i -lt $MAX_RETRIES ]; then
+              echo "재시도까지 ${RETRY_DELAY}초 대기..."
+              sleep $RETRY_DELAY
+            fi
+          fi
+        done
+        echo "최대 재시도 횟수 초과. 실패 처리."
+        exit 1
