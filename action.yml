@@ -62,7 +62,7 @@ runs:
 
     - name: Create VPN Connect Script
       shell: bash
-      timeout_minutes: 1
+      timeout-minutes : 1
       env:
         VPN_USERNAME: ${{ inputs.VPN_USERNAME }}
         VPN_PASS: ${{ inputs.VPN_PASS }}
@@ -84,6 +84,7 @@ runs:
     - name : Retry
       if: failure()
       shell: bash
+      timeout-minutes : 1
       run: |
         echo "Retrying VPN connection..."
         ./vpnconnect.exp
